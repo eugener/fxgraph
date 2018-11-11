@@ -6,13 +6,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.transform.Scale;
 
 public class TriangleCell extends AbstractCell {
 
-	private final String text;
-
-	public TriangleCell(String text) {
-		this.text = text;
+	public TriangleCell() {
 	}
 
 	@Override
@@ -25,16 +23,15 @@ public class TriangleCell extends AbstractCell {
 		view.setStroke(Color.RED);
 		view.setFill(Color.RED);
 
-		return new Pane(view);
-	}
+		final Pane pane = new Pane(view);
+		pane.setPrefSize(50, 50);
+		final Scale scale = new Scale(1, 1);
+		view.getTransforms().add(scale);
+		scale.xProperty().bind(pane.widthProperty().divide(50));
+		scale.yProperty().bind(pane.heightProperty().divide(50));
+		CellGestures.makeResizable(pane);
 
-	@Override
-	public String toString() {
-		return text;
-	}
-
-	public String getText() {
-		return text;
+		return pane;
 	}
 
 }
